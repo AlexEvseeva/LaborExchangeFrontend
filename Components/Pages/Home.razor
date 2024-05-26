@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using LaborExchange.Frontend.Clients;
 @inject VacanciesClient Client;
+@inject NavigationManager NavigationManager;
 
 @rendermode InteractiveServer
 
@@ -9,6 +10,14 @@
 @if(vacancies is null){
     <p><em>Loading...</em></p>
 } else {
+    <EditForm FormName="VacancySearchForm" Model="@SearchString" OnValidSubmit="Search">
+        <InputText @bind-Value="SearchString"/>
+        <button type="submit" class="btn btn-primary">Search</button>
+        <button onclick="ClearSearch" class="btn btn-secondary">Clear search</button>
+    </EditForm>
+    
+
+
     <a class="btn btn-primary me-2 mt-3" role="button" href="/VacancyEdit">
         <i class="bi bi-file-earmark-plus"></i>
     </a>
@@ -47,7 +56,9 @@
 
 
 @code {
+    string SearchString = "";
     List<Vacancy>? vacancies;
+    List<Vacancy>? filtered = new();
 
     protected override async Task OnInitializedAsync() {
         vacancies = await Client.GetVacanciesAsync();
@@ -57,5 +68,26 @@
 
     private string GetDeleteModalId(Vacancy vacancy) {
         return $"#{DeleteVacancyDialog.GetModalId(vacancy)}";
+    }
+
+    private void Search(){
+        if(SearchString != ""){
+            foreach(var vacancy in vacancies){
+                if(vacancy.FirmName.Contains(SearchString, StringComparison.OrdinalIgnoreCase)){
+                    filtered.Add(vacancy);
+                }
+            }
+            vacancies.Clear();
+            foreach(var v in filtered){
+                vacancies.Add(v);
+            }
+            NavigationManager.Refresh();
+
+        }
+    }
+
+    private async Task ClearSearch(){
+        vacancies = await Client.GetVacanciesAsync();
+        NavigationManager.Refresh();
     }
 }
