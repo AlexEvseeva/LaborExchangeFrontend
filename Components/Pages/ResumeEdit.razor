@@ -1,0 +1,145 @@
+﻿@page "/ResumeEdit/{id:int}"
+@page "/ResumeEdit"
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager;
+@inject ResumeClient ResumeClient;
+@inject ProfessionsClient ProfessionClient;
+
+@using LaborExchange.Frontend.Clients;
+@using LaborExchange.Frontend.Models.Resume;
+
+<PageTitle>@title</PageTitle>
+@if(Id is null){
+    <h3>@title</h3>
+}
+<div class="row">
+    <div class="col-md-4">
+      @if(professions == null || cRes == null) {
+        <p><em>Loading...</em></p>
+      } else {
+        <EditForm Model="@cRes" FormName="editResume" OnValidSubmit="HandleSubmitAsync">
+            <DataAnnotationsValidator/>
+            <ValidationSummary />
+            <div class="mb-3">
+                <label for="FirstName" class="form-label">Ім'я:</label>
+                <InputText id="FirstName" @bind-Value="cRes.FirstName" class="form-control"/>
+                <ValidationMessage For="() => cRes.FirstName" />
+            </div>
+
+            <div class="mb-3">
+                <label for="LastName" class="form-label">Прізвище:</label>
+                <InputText id="LastName" @bind-Value="cRes.LastName" class="form-control"/>
+                <ValidationMessage For="() => cRes.LastName" />
+            </div>
+
+            <div class="mb-3">
+                <label for="ProfessionId" class="form-label">Посада:</label>
+                <InputSelect id="ProfessionId" @bind-Value="cRes.ProfessionId" class="form-select">
+                <option value="">Оберіть посаду</option>
+                @foreach(var prof in professions) {
+                    <option value="@prof.Id">@prof.Name</option>
+                }
+                </InputSelect>
+                <ValidationMessage For="() => cRes.ProfessionId" />
+            </div>
+
+            <div class="mb-3">
+                <label for="Education" class="form-label">Освіта:</label>
+                <InputText id="Education" @bind-Value="cRes.Education" class="form-control"/>
+                <ValidationMessage For="() => cRes.Education" />
+            </div>
+
+            <div class="mb-3">
+                <label for="LastPositionFirm" class="form-label">Останнє місце роботи:</label>
+                <InputText id="LastPositionFirm" @bind-Value="cRes.LastPositionFirm" class="form-control"/>
+                <ValidationMessage For="() => cRes.LastPositionFirm" />
+            </div>
+
+            <div class="mb-3">
+                <label for="LastPositionName" class="form-label">Остання Посада:</label>
+                <InputText id="LastPositionName" @bind-Value="cRes.LastPositionName" class="form-control"/>
+                <ValidationMessage For="() => cRes.LastPositionName" />
+            </div>
+
+            <div class="mb-3">
+                <label for="ReasonOfDismissal" class="form-label">Причина звільнення:</label>
+                <InputText id="ReasonOfDismissal" @bind-Value="cRes.ReasonOfDismissal" class="form-control"/>
+                <ValidationMessage For="() => cRes.ReasonOfDismissal" />
+            </div>
+
+            <div class="mb-3">
+                <label for="MartialStatus" class="form-label">Сімейний стан:</label>
+                <InputText id="MartialStatus" @bind-Value="cRes.MartialStatus" class="form-control"/>
+                <ValidationMessage For="() => cRes.MartialStatus" />
+            </div>
+
+            <div class="mb-3">
+                <label for="LivingCondition" class="form-label">Житлові умови:</label>
+                <InputText id="LivingCondition" @bind-Value="cRes.LivingCondition" class="form-control"/>
+                <ValidationMessage For="() => cRes.LivingCondition" />
+            </div>
+
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email:</label>
+                <InputText id="Email" @bind-Value="cRes.Email" class="form-control"/>
+                <ValidationMessage For="() => cRes.Email" />
+            </div>
+
+            <div class="mb-3">
+                <label for="Phone" class="form-label">Телефон:</label>
+                <InputText id="Phone" @bind-Value="cRes.Phone" class="form-control"/>
+                <ValidationMessage For="() => cRes.Phone" />
+            </div>
+
+            <div class="mb-3">
+                <label for="Requirements" class="form-label">Вимоги до роботи:</label>
+                <InputText id="Requirements" @bind-Value="cRes.Requirements" class="form-control"/>
+                <ValidationMessage For="() => cRes.Requirements" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a role="button" class="btn btn-secondary" href="/">Cancel</a>
+            </EditForm>
+      }
+
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int? Id {get;set;}
+    private string title = string.Empty;
+    private List<Profession> professions;
+
+    [SupplyParameterFromForm]
+    private CreateResume? cRes {get;set;}
+
+    protected override async Task OnParametersSetAsync(){
+        if(Id is not null){
+            cRes = (await ResumeClient.GetResumeById((int)Id)).toCreateDto();
+            title = $"{cRes.LastName} {cRes.FirstName}";
+        } else {
+            cRes = new();
+            title = "Нове резюме";
+        }
+    }
+
+    protected override async Task OnInitializedAsync(){
+        professions = await ProfessionClient.GetProfessionsAsync();
+    }
+
+    private async Task HandleSubmitAsync() {
+        ArgumentNullException.ThrowIfNull(cRes);
+
+        if(Id is null){
+            await ResumeClient.AddResumeAsync(cRes);
+        } else {
+            await ResumeClient.UpdateResumeAsync(cRes.toUpdateDto((int)Id), (int)Id);
+        }
+
+        NavigationManager.NavigateTo("/Resume"); 
+    }
+}
