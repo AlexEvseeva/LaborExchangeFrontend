@@ -1,4 +1,6 @@
-﻿namespace LaborExchange.Frontend;
+﻿using LaborExchange.Frontend.Models.Resume;
+
+namespace LaborExchange.Frontend.Clients;
 
 public class ResumeClient(HttpClient httpClient)
 {

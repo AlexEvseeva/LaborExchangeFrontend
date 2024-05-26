@@ -1,4 +1,3 @@
-using LaborExchange.Frontend;
 using LaborExchange.Frontend.Clients;
 using LaborExchange.Frontend.Components;
 

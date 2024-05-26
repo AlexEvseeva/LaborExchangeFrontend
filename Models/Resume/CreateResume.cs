@@ -1,4 +1,4 @@
-﻿namespace LaborExchange.Frontend;
+﻿namespace LaborExchange.Frontend.Models.Resume;
 
 public class CreateResume
 {

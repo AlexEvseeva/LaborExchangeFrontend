@@ -1,4 +1,4 @@
-﻿namespace LaborExchange.Frontend;
+﻿namespace LaborExchange.Frontend.Clients;
 
 public class ProfessionsClient(HttpClient httpClient)
 {
