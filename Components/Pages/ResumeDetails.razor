@@ -1,0 +1,99 @@
+﻿@page "/ResumeDetails/{id:int}"
+@using LaborExchange.Frontend.Clients;
+@using LaborExchange.Frontend.Models.Resume;
+@inject ResumeClient client;
+
+<PageTitle>@title</PageTitle>
+@if(res is not null){
+    <div>
+        <h2>@GetName()</h2>
+        <h3>@res.Profession.Name</h3>
+
+        @if(res.Education is not null){
+            <div>
+                <label class = "fs-6">Освіта</label>
+                <p class = "fs-3">@res.Education</p>
+            </div>
+        }
+
+        @if(res.LastPositionFirm is not null){
+            <div>
+                <label class = "fs-6">Останнє місце роботи</label>
+                <p class = "fs-3">@res.LastPositionFirm</p>
+            </div>
+        }
+
+        @if(res.LastPositionName is not null){
+            <div>
+                <label class = "fs-6">Остання посада</label>
+                <p class = "fs-3">@res.LastPositionName</p>
+            </div>
+        }
+
+        @if(res.ReasonOfDismissal is not null){
+            <div>
+                <label class = "fs-6">Причина звільнення</label>
+                <p class = "fs-3">@res.ReasonOfDismissal</p>
+            </div>
+        }
+
+        @if(res.MartialStatus is not null){
+            <div>
+                <label class = "fs-6">Сімейний стан</label>
+                <p class = "fs-3">@res.MartialStatus</p>
+            </div>
+        }
+
+        @if(res.LivingCondition is not null){
+            <div>
+                <label class = "fs-6">Житлові умови</label>
+                <p class = "fs-3">@res.LivingCondition</p>
+            </div>
+        }
+
+        @if(res.Requirements is not null){
+            <div>
+                <label class = "fs-6">Вимоги до роботи</label>
+                <p class = "fs-3">@res.Requirements</p>
+            </div>
+        }
+
+        <div>
+            <label class = "fs-6">Контактні дані</label>
+            @if(res.Email is not null){
+                <p class = "fs-3">@res.Email</p>    
+            }
+            @if(res.Phone is not null){
+                <p class = "fs-3">@res.Phone</p>    
+            }
+            @if(res.Phone is null && res.Email is null){
+                <p class="fs-3">-</p>
+            }
+        </div>
+
+    </div>
+    <a class="btn btn-primary me-2" role="button" href="@GetEditResumeRoute()">
+        <i class="bi bi-pencil-square"></i>
+    </a>
+} else {
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int Id {get; set;}
+    private string title = string.Empty;
+    private Resume? res {get;set;}
+
+    protected override async Task OnParametersSetAsync(){
+        res = await client.GetResumeById(Id);
+        title = $"{res.LastName} {res.FirstName}";
+        
+    }
+
+    private string GetEditResumeRoute() => $"/ResumeEdit/{Id}";
+
+    private string GetName() => $"{res.LastName} {res.FirstName}";
+
+    private string GetContacts() => $"Email: {res.Email}\nPhone: {res.Phone}";
+}
