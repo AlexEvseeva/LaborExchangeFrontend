@@ -13,6 +13,7 @@ var LaborExchange = builder.Configuration["LaborExchangeUrl"] ?? throw new Excep
 
 builder.Services.AddHttpClient<VacanciesClient>(client => client.BaseAddress = new Uri(LaborExchange));
 builder.Services.AddHttpClient<ProfessionsClient>(client => client.BaseAddress = new Uri(LaborExchange));
+builder.Services.AddHttpClient<ResumeClient>(client => client.BaseAddress = new Uri(LaborExchange));
 
 var app = builder.Build();
 
