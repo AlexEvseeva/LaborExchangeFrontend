@@ -1,0 +1,108 @@
+﻿@page "/VacancyEdit/{id:int}"
+@page "/VacancyEdit"
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager;
+@inject VacanciesClient VacancyClient;
+@inject ProfessionsClient ProfessionClient;
+
+@using LaborExchange.Frontend.Clients;
+
+<PageTitle>@title</PageTitle>
+@if(Id is null){
+    <h3>@title</h3>
+}
+<div class="row">
+    <div class="col-md-4">
+      @if(professions == null || vacancy == null) {
+        <p><em>Loading...</em></p>
+      } else {
+        <EditForm Model="@vacancy" FormName="editVacancy" OnValidSubmit="HandleSubmitAsync">
+          <DataAnnotationsValidator/>
+          <ValidationSummary />
+          <div class="mb-3">
+            <label for="FirmName" class="form-label">Компанія:</label>
+            <InputText id="FirmName" @bind-Value="vacancy.FirmName" class="form-control" aria-describedby="Назва компанії"/>
+            <ValidationMessage For="() => vacancy.FirmName" />
+          </div>
+
+          <div class="mb-3">
+            <label for="ProfessionId" class="form-label">Посада:</label>
+            <InputSelect id="ProfessionId" @bind-Value="vacancy.ProfessionId" class="form-select" aria-describedby="Посада">
+              <option value="">Оберіть посаду</option>
+              @foreach(var prof in professions) {
+                <option value="@prof.Id">@prof.Name</option>
+              }
+            </InputSelect>
+            <ValidationMessage For="() => vacancy.ProfessionId" />
+          </div>
+          
+          <div class="mb-3">
+            <label for="WorkingCondition" class="form-label">Умови праці:</label>
+            <InputText id="WorkingCondition" @bind-Value="vacancy.WorkingCondition" class="form-control" aria-describedby="Умови праці"/>
+            <ValidationMessage For="() => vacancy.WorkingCondition" />
+          </div>
+
+          @* <div class="mb-3">
+            <label for="Payment" class="form-label">Заробітна плата:</label>
+            <InputText id="Payment" @bind-Value="vacancy.Payment" class="form-control" aria-describedby="Заробітна плата"/>
+            <ValidationMessage For="() => vacancy.Payment" />
+          </div> *@
+
+          <div class="mb-3">
+            <label for="LivingCondition" class="form-label">Житлові умови:</label>
+            <InputText id="LivingCondition" @bind-Value="vacancy.LivingCondition" class="form-control" aria-describedby="Житлові умови"/>
+            <ValidationMessage For="() => vacancy.LivingCondition" />
+          </div>
+
+          <div class="mb-3">
+            <label for="Requirements" class="form-label">Вимоги:</label>
+            <InputText id="Requirements" @bind-Value="vacancy.Requirements" class="form-control" aria-describedby="Вимоги"/>
+            <ValidationMessage For="() => vacancy.Requirements" />
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Save</button>
+          <a role="button" class="btn btn-secondary" href="/">Cancel</a>
+        </EditForm>
+      }
+
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int? Id {get;set;}
+    private string title = string.Empty;
+    private List<Profession> professions;
+
+    [SupplyParameterFromForm]
+    private CreateVacancy? vacancy {get;set;}
+
+    protected override async Task OnParametersSetAsync(){
+        if(Id is not null){
+            vacancy = (await VacancyClient.GetVacancyById((int)Id)).toCreateDto();
+            title = $"{vacancy.FirmName}";
+        } else {
+            vacancy = new();
+            title = "Нова вакансія";
+        }
+    }
+
+    protected override async Task OnInitializedAsync(){
+        professions = await ProfessionClient.GetProfessionsAsync();
+    }
+
+    private async Task HandleSubmitAsync() {
+        ArgumentNullException.ThrowIfNull(vacancy);
+
+        if(Id is null){
+            await VacancyClient.AddVacancyAsync(vacancy);
+        } else {
+            await VacancyClient.UpdateVacancyAsync(vacancy.toUpdateDto((int)Id), (int)Id);
+        }
+
+        NavigationManager.NavigateTo("/"); 
+    }
+}

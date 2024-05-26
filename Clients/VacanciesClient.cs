@@ -1,13 +1,13 @@
-﻿namespace LaborExchange.Frontend;
+﻿namespace LaborExchange.Frontend.Clients;
 
-public class VacanciesClient (HttpClient httpClient)
+public class VacanciesClient(HttpClient httpClient)
 {
     const string endpointName = "vacancies";
-    public async Task<List<Vacancy>> GetVacanciesAsync () => 
+    public async Task<List<Vacancy>> GetVacanciesAsync() =>
         await httpClient.GetFromJsonAsync<List<Vacancy>>(endpointName) ?? [];
 
-    public async Task<Vacancy> GetVacancyById(int id) => 
-        await httpClient.GetFromJsonAsync<Vacancy>($"{endpointName}/{id}") 
+    public async Task<Vacancy> GetVacancyById(int id) =>
+        await httpClient.GetFromJsonAsync<Vacancy>($"{endpointName}/{id}")
             ?? throw new Exception($"Vacancy with id: {id} not found!");
 
     public async Task AddVacancyAsync(CreateVacancy vacancy) =>

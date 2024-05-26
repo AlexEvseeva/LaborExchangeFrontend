@@ -1,4 +1,5 @@
 using LaborExchange.Frontend;
+using LaborExchange.Frontend.Clients;
 using LaborExchange.Frontend.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ var LaborExchange = builder.Configuration["LaborExchangeUrl"] ?? throw new Excep
 // var LaborExchange = "http://localhost:5104";
 
 builder.Services.AddHttpClient<VacanciesClient>(client => client.BaseAddress = new Uri(LaborExchange));
+builder.Services.AddHttpClient<ProfessionsClient>(client => client.BaseAddress = new Uri(LaborExchange));
 
 var app = builder.Build();
 

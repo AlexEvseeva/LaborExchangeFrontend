@@ -1,0 +1,53 @@
+﻿@page "/VacancyDetails/{id:int}"
+@using LaborExchange.Frontend.Clients;
+@inject VacanciesClient client;
+
+<PageTitle>@title</PageTitle>
+@if(vacancy is not null){
+    <div>
+        <h2>@vacancy.Position.Name</h2>
+        <h3>"@vacancy.FirmName"</h3>
+        <p class = "fs-5">@vacancy.Payment.ToString("C2")</p>
+
+        @if(vacancy.WorkingCondition is not null){
+            <div>
+                <label class = "fs-6">Умови праці</label>
+                <p class = "fs-3">@vacancy.WorkingCondition</p>
+            </div>
+        }
+
+        @if(vacancy.LivingCondition is not null){
+            <div>
+                <label class = "fs-6">Житлові умови</label>
+                <p class = "fs-3">@vacancy.LivingCondition</p>
+            </div>
+        }
+
+        @if(vacancy.Requirements is not null){
+            <div>
+                <label class = "fs-6">Вимоги</label>
+                <p class = "fs-3">@vacancy.Requirements</p>
+            </div>
+        }
+    </div>
+    <a class="btn btn-primary me-2" role="button" href="@GetEditVacancyRoute()">
+        <i class="bi bi-pencil-square"></i>
+    </a>
+} else {
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int Id {get; set;}
+    private string title = string.Empty;
+    private Vacancy? vacancy {get;set;}
+
+    protected override async Task OnParametersSetAsync(){
+        vacancy = await client.GetVacancyById(Id);
+        title = $"{vacancy.Position.Name}";
+        
+    }
+
+    private string GetEditVacancyRoute() => $"/VacancyEdit/{Id}";
+}
