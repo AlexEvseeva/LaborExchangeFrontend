@@ -44,11 +44,11 @@
             <ValidationMessage For="() => vacancy.WorkingCondition" />
           </div>
 
-          @* <div class="mb-3">
-            <label for="Payment" class="form-label">Заробітна плата:</label>
-            <InputText id="Payment" @bind-Value="vacancy.Payment" class="form-control" aria-describedby="Заробітна плата"/>
+          <div class="mb-3">
+            <label for="Payment" class="form-label">Зарплатня:</label>
+            <InputNumber id="Payment" @bind-Value="vacancy.Payment" class="form-control" aria-describedby="Зарплатня"/>
             <ValidationMessage For="() => vacancy.Payment" />
-          </div> *@
+          </div>
 
           <div class="mb-3">
             <label for="LivingCondition" class="form-label">Житлові умови:</label>
