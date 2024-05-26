@@ -38,7 +38,7 @@
                             <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
-                    @* <DeleteResumeDialog resume="@res" /> *@
+                    <DeleteResumeDialog res="@res" />
                 </td>
             </tr>
         }
@@ -57,7 +57,6 @@
     private static string GetResumeUrl(int id) => $"/ResumeDetails/{id}";
 
     private string GetDeleteModalId(Resume resume) {
-        @* return $"#{DeleteResumeDialog.GetModalId(resume)}"; *@
-        return "";
+        return $"#{DeleteResumeDialog.GetModalId(resume)}";
     }
 }
