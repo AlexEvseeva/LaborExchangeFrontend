@@ -55,11 +55,17 @@
 
 @code {
     string SearchString = "";
-    List<Vacancy>? vacancies;
+    List<Vacancy>? vacancies = new();
     List<Vacancy>? filtered = new();
 
     protected override async Task OnInitializedAsync() {
-        vacancies = await Client.GetVacanciesAsync();
+        filtered = await Client.GetVacanciesAsync();
+        foreach(var f in filtered) {
+            if(!f.IsArchived) {
+                vacancies.Add(f);
+            }
+        }
+        filtered.Clear();
     }
 
     private static string GetVacancyUrl(int id) => $"/VacancyDetails/{id}";

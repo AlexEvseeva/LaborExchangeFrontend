@@ -26,4 +26,16 @@ public static class VacancyMapping
         Requirements = vacancy.Requirements,
         IsArchived = vacancy.IsArchived
     };
+     public static UpdateVacancy toUpdateDto(this Vacancy vacancy, int id) =>
+        new UpdateVacancy{
+            Id = id,
+            FirmName = vacancy.FirmName,
+            ProfessionId = vacancy.Position.Id,
+            WorkingCondition = vacancy.WorkingCondition,
+            Payment = vacancy.Payment,
+            LivingCondition = vacancy.LivingCondition,
+            Requirements = vacancy.Requirements,
+            IsArchived = vacancy.IsArchived
+        };
+
 }

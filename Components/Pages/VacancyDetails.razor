@@ -1,7 +1,9 @@
 ﻿@page "/VacancyDetails/{id:int}"
 @using LaborExchange.Frontend.Clients;
 @using LaborExchange.Frontend.Models.Vacancies;
+
 @inject VacanciesClient client;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>@title</PageTitle>
 @if(vacancy is not null){
@@ -42,6 +44,9 @@
     <a class="btn btn-primary me-2" role="button" href="@GetEditVacancyRoute()">
         <i class="bi bi-pencil-square"></i>
     </a>
+    <button @onclick="MarkAsArchived" class="btn btn-primary me-2">
+        <i class="bi bi-archive"></i>
+    </button>
 } else {
     <p><em>Loading...</em></p>
 }
@@ -51,6 +56,7 @@
     public int Id {get; set;}
     private string title = string.Empty;
     private Vacancy? vacancy {get;set;}
+    private string temp = "";
 
     protected override async Task OnParametersSetAsync(){
         vacancy = await client.GetVacancyById(Id);
@@ -59,4 +65,11 @@
     }
 
     private string GetEditVacancyRoute() => $"/VacancyEdit/{Id}";
+
+    private async Task MarkAsArchived() {
+        var updated = vacancy.toUpdateDto(Id);
+        updated.IsArchived = true;
+        await client.UpdateVacancyAsync(updated, Id);
+        NavigationManager.NavigateTo(GetEditVacancyRoute());
+    }
 }
