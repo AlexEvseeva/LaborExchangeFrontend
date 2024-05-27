@@ -11,7 +11,8 @@ public static class VacancyMapping
         WorkingCondition = vacancy.WorkingCondition,
         Payment = vacancy.Payment,
         LivingCondition = vacancy.LivingCondition,
-        Requirements = vacancy.Requirements
+        Requirements = vacancy.Requirements,
+        IsArchived = vacancy.IsArchived
     };
 
     public static UpdateVacancy toUpdateDto(this CreateVacancy vacancy, int id) =>
@@ -22,6 +23,7 @@ public static class VacancyMapping
         WorkingCondition = vacancy.WorkingCondition,
         Payment = vacancy.Payment,
         LivingCondition = vacancy.LivingCondition,
-        Requirements = vacancy.Requirements
+        Requirements = vacancy.Requirements,
+        IsArchived = vacancy.IsArchived
     };
 }
