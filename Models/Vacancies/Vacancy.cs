@@ -1,4 +1,4 @@
-﻿namespace LaborExchange.Frontend;
+﻿namespace LaborExchange.Frontend.Models.Vacancies;
 
 public class Vacancy
 {
@@ -9,4 +9,5 @@ public class Vacancy
     public decimal Payment { get; set; }
     public string? LivingCondition { get; set; }
     public string Requirements { get; set; }
+    public bool IsArchived { get; set; }
 }

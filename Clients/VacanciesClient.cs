@@ -1,4 +1,6 @@
-﻿namespace LaborExchange.Frontend.Clients;
+﻿using LaborExchange.Frontend.Models.Vacancies;
+
+namespace LaborExchange.Frontend.Clients;
 
 public class VacanciesClient(HttpClient httpClient)
 {

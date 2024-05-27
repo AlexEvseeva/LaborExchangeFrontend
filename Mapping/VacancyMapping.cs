@@ -1,4 +1,6 @@
-﻿namespace LaborExchange.Frontend;
+﻿using LaborExchange.Frontend.Models.Vacancies;
+
+namespace LaborExchange.Frontend;
 
 public static class VacancyMapping
 {

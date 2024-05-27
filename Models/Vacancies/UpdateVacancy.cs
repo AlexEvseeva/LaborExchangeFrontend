@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LaborExchange.Frontend;
+namespace LaborExchange.Frontend.Models.Vacancies;
 
 public class UpdateVacancy
 {
@@ -11,4 +11,5 @@ public class UpdateVacancy
     [Range(0, 120_000_000)] public decimal? Payment { get; set; }
     public string? LivingCondition { get; set; }
     [Required] public string Requirements { get; set; }
+    public bool IsArchived { get; set; }
 }
