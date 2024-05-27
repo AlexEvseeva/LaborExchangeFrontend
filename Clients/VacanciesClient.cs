@@ -18,4 +18,7 @@ public class VacanciesClient(HttpClient httpClient)
 
     public async Task DeleteVacancyAsync(int id) =>
         await httpClient.DeleteAsync($"{endpointName}/{id}");
+
+
+    
 }
