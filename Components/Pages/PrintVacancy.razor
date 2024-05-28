@@ -1,0 +1,46 @@
+﻿@page "/VacancyPrint/{id:int}"
+@using LaborExchange.Frontend.Clients;
+@using LaborExchange.Frontend.Models.Vacancies;
+
+@inject VacanciesClient client;
+@inject NavigationManager NavigationManager;
+
+@rendermode InteractiveServer
+
+<PageTitle>@title</PageTitle>
+@if (vacancy is null){
+    <p><em>Loading...</em></p>
+} else {
+    <div class="fs-2">
+        <h2 class="fs-1">Розшується @vacancy.Position.Name</h2>
+        <p>В компанію "@vacancy.FirmName" потребується @vacancy.Position.Name</p>
+        @if(vacancy.WorkingCondition is not null){
+            <p> Умови праці: @vacancy.WorkingCondition.</p>
+        }
+        @if(vacancy.Payment != null){
+            <p>Заробітна плата: @vacancy.Payment.ToString("C2")</p>
+        }
+        @if(vacancy.LivingCondition is not null){
+            <p>Житлові умови: @vacancy.LivingCondition</p>
+        }
+        @if(vacancy.Requirements is not null){
+            <p>Обов'язково: @vacancy.Requirements</p>
+        }
+    </div>
+}
+
+
+
+@code {
+    [Parameter]
+    public int Id {get; set;}
+    private string title = string.Empty;
+    private Vacancy? vacancy {get;set;}
+
+    protected override async Task OnParametersSetAsync(){
+        vacancy = await client.GetVacancyById(Id);
+        title = $"{vacancy.Position.Name}";
+        
+    }
+
+}

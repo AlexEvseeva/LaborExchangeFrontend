@@ -46,6 +46,9 @@
     <a class="btn btn-primary me-2" role="button" href="@GetEditVacancyRoute()">
         <i class="bi bi-pencil-square"></i>
     </a>
+    <a class="btn btn-primary me-2" role="button" href="@GetPrintVacancyRoute()">
+        <i class="bi bi-printer"></i>
+    </a>
     <button @onclick="MarkAsArchived" class="btn btn-primary me-2">
         <i class="bi bi-archive"></i>
     </button>
@@ -67,6 +70,8 @@
     }
 
     private string GetEditVacancyRoute() => $"/VacancyEdit/{Id}";
+    
+    private string GetPrintVacancyRoute() => $"/VacancyPrint/{Id}";
 
     private async Task MarkAsArchived() {
         var updated = vacancy.toUpdateDto(Id);
