@@ -5,6 +5,8 @@
 @inject VacanciesClient client;
 @inject NavigationManager NavigationManager;
 
+@rendermode InteractiveServer
+
 <PageTitle>@title</PageTitle>
 @if(vacancy is not null){
     <div>
@@ -70,6 +72,6 @@
         var updated = vacancy.toUpdateDto(Id);
         updated.IsArchived = true;
         await client.UpdateVacancyAsync(updated, Id);
-        NavigationManager.NavigateTo(GetEditVacancyRoute());
+        NavigationManager.NavigateTo("/");
     }
 }

@@ -17,7 +17,8 @@
     </a>
         <InputText @bind-Value="SearchString" placeholder="Пошук по вакансіях"/>
         <button type="submit" class="btn btn-primary">Пошук</button>
-        <button @onclick="ClearSearch" class="btn btn-secondary">Скинути</button>
+        <button @onclick="ClearSearch" class="btn btn-secondary me-3">Скинути</button>
+        <input type="checkbox" @onchange="ShowAllChanged"> <label>Показати всі</label>
     </EditForm>
   
    <table class="table table-striped table-bordered table-hover mt-3">
@@ -59,13 +60,7 @@
     List<Vacancy>? filtered = new();
 
     protected override async Task OnInitializedAsync() {
-        filtered = await Client.GetVacanciesAsync();
-        foreach(var f in filtered) {
-            if(!f.IsArchived) {
-                vacancies.Add(f);
-            }
-        }
-        filtered.Clear();
+        await LoadCurrentVacancies(true);
     }
 
     private static string GetVacancyUrl(int id) => $"/VacancyDetails/{id}";
@@ -100,5 +95,26 @@
         vacancies.Clear();
         vacancies = await Client.GetVacanciesAsync();
         NavigationManager.Refresh();
+    }
+
+    private async Task ShowAllChanged(ChangeEventArgs args){
+        await LoadCurrentVacancies(!((bool)(args.Value)));
+        NavigationManager.Refresh();
+    }
+    private async Task LoadCurrentVacancies(bool filtering){
+        if(filtering){
+            vacancies.Clear();
+            filtered.Clear();
+            filtered = await Client.GetVacanciesAsync();
+            foreach(var f in filtered) {
+                if(!f.IsArchived) {
+                vacancies.Add(f);
+                }   
+            }
+            filtered.Clear();    
+        } else {
+            vacancies = await Client.GetVacanciesAsync();
+        }
+        
     }
 }
