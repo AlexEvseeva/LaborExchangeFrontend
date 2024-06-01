@@ -17,7 +17,8 @@ public static class ResumeMapping
             LivingCondition = resume.LivingCondition,
             Email = resume.Email,
             Phone = resume.Phone,
-            Requirements = resume.Requirements
+            Requirements = resume.Requirements,
+            DateOfBirth = resume.DateOfBirth,
         };
 
     public static UpdateResume toUpdateDto(this CreateResume resume, int id) =>
@@ -34,6 +35,7 @@ public static class ResumeMapping
             LivingCondition = resume.LivingCondition,
             Email = resume.Email,
             Phone = resume.Phone,
-            Requirements = resume.Requirements
+            Requirements = resume.Requirements,
+            DateOfBirth = resume.DateOfBirth,
         };
 }

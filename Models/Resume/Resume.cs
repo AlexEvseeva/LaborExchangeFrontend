@@ -17,4 +17,5 @@ public class Resume
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string? Requirements { get; set; }
+    public DateOnly DateOfBirth {get; set; }
 }
