@@ -13,4 +13,5 @@ public class Vacancy
     public string Requirements { get; set; }
     public string Contacts { get; set; }
     public bool IsArchived { get; set; }
+    public bool? IsSelected { get; set; }
 }

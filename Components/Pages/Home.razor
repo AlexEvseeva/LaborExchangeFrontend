@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using LaborExchange.Frontend.Clients;
 @using LaborExchange.Frontend.Models.Vacancies;
+@using System.Text;
 @inject VacanciesClient Client;
 @inject NavigationManager NavigationManager;
 
@@ -19,19 +20,26 @@
         <button type="submit" class="btn btn-primary">Пошук</button>
         <button @onclick="ClearSearch" class="btn btn-secondary me-3">Скинути</button>
         <input type="checkbox" @onchange="ShowAllChanged"> <label>Показати архівовані</label>
+
+    <a class="btn btn-primary ms-5 " role="button" href="@GenerateFileUrl()">
+        <i class="bi bi-printer"></i>
+    </a>
     </EditForm>
-  
-   <table class="table table-striped table-bordered table-hover mt-3">
+
+
+ <table class="table table-striped table-bordered table-hover mt-3">
         <thead class="table-dark">
             <th>Компанія</th>
             <th>Посада</th>
             <th>Зарпалта</th>
             <th>Вимоги</th>
             <th></th>
+            <th>Обрано</th>
     </thead>
     <tbody>
         @foreach (var vacancy in vacancies) {
             @if(@vacancy.IsArchived){
+                
             <tr>
                 <td>@vacancy.FirmName</td>
                 <td>@vacancy.Position.Name</td>
@@ -52,6 +60,9 @@
 
                     </div>
                     <DeleteVacancyDialog vacancy="@vacancy" />
+                </td>
+                <td>
+
                 </td>
             </tr>
             } else {
@@ -74,12 +85,16 @@
                     </div>
                     <DeleteVacancyDialog vacancy="@vacancy" />
                 </td>
+                <td>
+                    <input type="checkbox" @bind-value="@vacancy.IsSelected"/>
+                </td>
             </tr>
             }
 
         }
     </tbody>
 </table>
+
 }
 
 
@@ -137,5 +152,18 @@
             vacancies = await Client.GetVacanciesAsync();
         }
         
+    }
+
+    private string GenerateFileUrl(){
+        StringBuilder builder = new();
+        foreach (var v in vacancies){
+            if(v.IsSelected == true){
+                builder.Append($"{v.FirmName}: {v.Position.Name} , {v.Contacts}\n");
+            }
+        }
+        var Data = builder.ToString();
+        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(Data);
+        var result = System.Convert.ToBase64String(plainTextBytes);
+        return $"data:application/octet-stream;charset=utf-16le;base64,{result}";
     }
 }
