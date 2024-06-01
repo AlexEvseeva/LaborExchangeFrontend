@@ -9,6 +9,13 @@
         <h2>@GetName()</h2>
         <h3>@res.Profession.Name</h3>
 
+        @if(res.DateOfBirth != null){
+            <div>
+                <label class = "fs-6">Дата народження</label>
+                <p class = "fs-3">@res.DateOfBirth.</p>
+            </div>
+        }
+
         @if(res.Education is not null){
             <div>
                 <label class = "fs-6">Освіта</label>

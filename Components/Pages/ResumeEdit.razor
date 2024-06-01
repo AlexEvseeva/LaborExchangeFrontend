@@ -36,6 +36,12 @@
             </div>
 
             <div class="mb-3">
+                <label for="DateOfBirth" class="form-label">Дата народження:</label>
+                <InputDate id="DateOfBirth" @bind-Value="cRes.DateOfBirth" class="form-control"/>
+                <ValidationMessage For="() => cRes.DateOfBirth" />
+            </div>
+
+            <div class="mb-3">
                 <label for="ProfessionId" class="form-label">Посада:</label>
                 <InputSelect id="ProfessionId" @bind-Value="cRes.ProfessionId" class="form-select">
                 <option value="">Оберіть посаду</option>
