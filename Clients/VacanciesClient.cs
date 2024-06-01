@@ -8,6 +8,9 @@ public class VacanciesClient(HttpClient httpClient)
     public async Task<List<Vacancy>> GetVacanciesAsync() =>
         await httpClient.GetFromJsonAsync<List<Vacancy>>(endpointName) ?? [];
 
+    public async Task<List<Vacancy>> GetVacanciesAsync(string query) =>
+        await httpClient.GetFromJsonAsync<List<Vacancy>>($"{endpointName}/search?query={query}") ?? new List<Vacancy>();
+
     public async Task<Vacancy> GetVacancyById(int id) =>
         await httpClient.GetFromJsonAsync<Vacancy>($"{endpointName}/{id}")
             ?? throw new Exception($"Vacancy with id: {id} not found!");
@@ -20,7 +23,6 @@ public class VacanciesClient(HttpClient httpClient)
 
     public async Task DeleteVacancyAsync(int id) =>
         await httpClient.DeleteAsync($"{endpointName}/{id}");
-
 
     
 }
