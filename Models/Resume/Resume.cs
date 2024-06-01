@@ -1,4 +1,6 @@
-﻿namespace LaborExchange.Frontend.Models.Resume;
+﻿using LaborExchange.Frontend.Models.Professions;
+
+namespace LaborExchange.Frontend.Models.Resume;
 
 public class Resume
 {

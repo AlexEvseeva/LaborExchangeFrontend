@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LaborExchange.Frontend;
+namespace LaborExchange.Frontend.Models.Professions;
 
 public class Profession
 {

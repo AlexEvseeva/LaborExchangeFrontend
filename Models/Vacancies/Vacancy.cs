@@ -1,4 +1,6 @@
-﻿namespace LaborExchange.Frontend.Models.Vacancies;
+﻿using LaborExchange.Frontend.Models.Professions;
+
+namespace LaborExchange.Frontend.Models.Vacancies;
 
 public class Vacancy
 {
