@@ -10,5 +10,6 @@ public class CreateVacancy
     [Range(0, 120_000_000)] public decimal? Payment { get; set; }
     public string? LivingCondition { get; set; }
     [Required] public string Requirements { get; set; }
+    [Required] public string Contacts { get; set; }
     public bool IsArchived { get; set; }
 }

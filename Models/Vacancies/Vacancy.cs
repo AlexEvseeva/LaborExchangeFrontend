@@ -11,5 +11,6 @@ public class Vacancy
     public decimal Payment { get; set; }
     public string? LivingCondition { get; set; }
     public string Requirements { get; set; }
+    public string Contacts { get; set; }
     public bool IsArchived { get; set; }
 }
